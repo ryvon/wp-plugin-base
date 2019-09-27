@@ -28,15 +28,23 @@ abstract class Plugin implements PluginInterface
     /**
      * @var HandlerInterface[]
      */
-    private $handlers = [];
+    private $handlers;
 
     /**
      * @param string $file
      */
-    public function __construct(string $file)
+    public function __construct(string $file, array $handlers)
     {
         $this->file = $file;
         $this->id = basename(basename($file, '.php'));
+        $this->handlers = [];
+
+        foreach ($handlers as $handler) {
+            if ($handler instanceof PluginAwareInterface) {
+                $handler->setPlugin($this);
+            }
+            $this->handlers[] = $handler;
+        }
     }
 
     /**
@@ -72,14 +80,6 @@ abstract class Plugin implements PluginInterface
     }
 
     /**
-     * @return HandlerInterface[]
-     */
-    protected function getHandlers(): array
-    {
-        return $this->handlers;
-    }
-
-    /**
      * @return string|null
      */
     public function getShortFile(): ?string
@@ -111,28 +111,11 @@ abstract class Plugin implements PluginInterface
     }
 
     /**
-     * @param string|HandlerInterface $handlerObjectOrClass
-     * @return self
+     * @return HandlerInterface[]
      */
-    public function addHandler($handlerObjectOrClass): self
+    protected function getHandlers(): array
     {
-        $classObject = $handlerObjectOrClass;
-
-        if (\is_string($handlerObjectOrClass)) {
-            $classObject = new $handlerObjectOrClass($this);
-        }
-
-        return $this->addHandlerObject($classObject);
-    }
-
-    /**
-     * @param HandlerInterface $object
-     * @return self
-     */
-    public function addHandlerObject(HandlerInterface $object): self
-    {
-        $this->handlers[] = $object;
-        return $this;
+        return $this->handlers;
     }
 
     /**
