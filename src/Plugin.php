@@ -120,6 +120,10 @@ class Plugin implements PluginInterface
     }
 
     /**
+     * TODO Evaluate whether we want to keep [set/get/clear]Data or not. The intent is to provide a way for handlers to
+     *      know about post type ids or other required data but there may be a better way of handling it (Options class
+     *      passed to handler constructors?)
+     *
      * @param string $key
      * @param $value
      */
