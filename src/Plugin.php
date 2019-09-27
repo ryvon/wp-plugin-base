@@ -79,24 +79,6 @@ class Plugin implements PluginInterface
     }
 
     /**
-     * @return string|null
-     */
-    public function getShortFile(): ?string
-    {
-        $lastSlash = strrpos($this->getFile(), '/');
-        if ($lastSlash === false) {
-            return null;
-        }
-
-        $penultimateSlash = strrpos($this->getFile(), '/', 0 - (strlen($this->getFile()) - $lastSlash + 1));
-        if ($penultimateSlash === false) {
-            return null;
-        }
-
-        return ltrim(substr($this->getFile(), $penultimateSlash), '/');
-    }
-
-    /**
      * @return string
      */
     public function getVersion(): string
