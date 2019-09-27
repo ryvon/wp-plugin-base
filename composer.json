@@ -1,12 +1,8 @@
 {
   "name": "ryvon/wp-plugin-base",
   "version": "0.0.1",
-  "description": "Base classes for Ryvon Wordpress plugins.",
   "homepage": "https://ryvon.com",
   "license": "MIT",
-  "require": {
-    "php": "^7.1"
-  },
   "require-dev": {
     "phpunit/phpunit": "^7.5",
     "brain/monkey": "2.*"
@@ -14,6 +10,9 @@
   "autoload": {
     "psr-4": {
       "Ryvon\\Plugin\\": "./src"
-    }
+    },
+    "files": [
+      "src/Bootstrap/helpers.php"
+    ]
   }
 }
