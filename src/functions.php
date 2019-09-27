@@ -19,12 +19,12 @@ if (!function_exists('plugin_add_admin_notice')) {
 
 if (!function_exists('plugin_is_supported_php_version')) {
     /**
-     * @param string $requiredVersion
+     * @param string $phpVersion
      * @return bool
      */
-    function plugin_is_supported_php_version($requiredVersion = '7.1')
+    function plugin_is_supported_php_version($phpVersion = '7.1')
     {
-        return !version_compare(PHP_VERSION, $requiredVersion, '<');
+        return !version_compare(PHP_VERSION, $phpVersion, '<');
     }
 }
 
@@ -44,11 +44,7 @@ if (!function_exists('plugin_deactivate_on_unsupported_php')) {
         }
 
         $pluginBasename = plugin_basename($pluginFile);
-        $versionError = sprintf(
-            $message,
-            $phpVersion,
-            PHP_VERSION
-        );
+        $versionError = sprintf($message, $phpVersion, PHP_VERSION);
 
         if (!function_exists('deactivate_plugins') || !function_exists('is_plugin_active')) {
             require_once ABSPATH . 'wp-admin/includes/plugin.php';

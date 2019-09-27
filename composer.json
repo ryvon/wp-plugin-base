@@ -12,7 +12,7 @@
       "Ryvon\\Plugin\\": "./src"
     },
     "files": [
-      "src/Bootstrap/helpers.php"
+      "src/functions.php"
     ]
   }
 }
