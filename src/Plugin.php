@@ -7,8 +7,7 @@ use Ryvon\Plugin\Handler\DeactivationHandlerInterface;
 use Ryvon\Plugin\Handler\GenericHandlerInterface;
 use Ryvon\Plugin\Handler\HandlerInterface;
 
-
-abstract class Plugin implements PluginInterface
+class Plugin implements PluginInterface
 {
     /**
      * @var string
@@ -128,8 +127,6 @@ abstract class Plugin implements PluginInterface
         register_activation_hook($this->getFile(), [$this, 'activate']);
         register_deactivation_hook($this->getFile(), [$this, 'deactivate']);
 
-        $this->setup();
-
         $admin = is_admin();
         foreach ($this->getHandlers() as $handler) {
             if (($handler instanceof GenericHandlerInterface) && $handler->setup($admin) === false) {
@@ -137,11 +134,6 @@ abstract class Plugin implements PluginInterface
             }
         }
     }
-
-    /**
-     * @return void;
-     */
-    abstract protected function setup(): void;
 
     /**
      * @return void
