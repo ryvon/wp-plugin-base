@@ -20,9 +20,9 @@ class Plugin implements PluginInterface
     private $id;
 
     /**
-     * @var string
+     * @var array
      */
-    private $version;
+    private $data;
 
     /**
      * @var HandlerInterface[]
@@ -31,12 +31,15 @@ class Plugin implements PluginInterface
 
     /**
      * @param string $file
+     * @param HandlerInterface[] $handlers
+     * @param array $data
      */
-    public function __construct(string $file, array $handlers)
+    public function __construct(string $file, array $handlers, array $data = [])
     {
         $this->file = $file;
         $this->id = basename(basename($file, '.php'));
         $this->handlers = [];
+        $this->data = $data;
 
         foreach ($handlers as $handler) {
             if ($handler instanceof PluginAwareInterface) {
@@ -81,14 +84,55 @@ class Plugin implements PluginInterface
     /**
      * @return string
      */
-    public function getVersion(): string
+    public function getVersion(): ?string
     {
-        if ($this->version === null) {
+        $pluginData = $this->getPluginMeta();
+
+        return $pluginData['Version'] ?? null;
+    }
+
+    /**
+     * @return array
+     */
+    private function getPluginMeta(): array
+    {
+        $pluginData = $this->getData('plugin_meta');
+        if ($pluginData === null) {
             $pluginData = get_file_data($this->getFile(), ['Version' => 'Version'], 'plugin');
 
-            $this->version = $pluginData['Version'] ?? 'Unknown';
+            $this->setData('plugin_meta', $pluginData);
         }
-        return $this->version;
+
+        return $pluginData;
+    }
+
+    /**
+     * @param string $key
+     * @param $value
+     */
+    public function setData(string $key, $value): void
+    {
+        $this->data[$key] = $value;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $defaultValue
+     * @return mixed
+     */
+    public function getData(string $key, $defaultValue = null)
+    {
+        return $this->data[$key] ?? $defaultValue;
+    }
+
+    /**
+     * @param string $key
+     */
+    public function clearData(string $key): void
+    {
+        if (isset($this->data[$key])) {
+            unset($this->data[$key]);
+        }
     }
 
     /**
