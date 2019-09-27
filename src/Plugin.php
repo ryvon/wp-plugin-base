@@ -84,6 +84,16 @@ class Plugin implements PluginInterface
     /**
      * @return string
      */
+    public function getDisplayName(): ?string
+    {
+        $pluginData = $this->getPluginMeta();
+
+        return $pluginData['Plugin Name'] ?? null;
+    }
+
+    /**
+     * @return string
+     */
     public function getVersion(): ?string
     {
         $pluginData = $this->getPluginMeta();
@@ -98,7 +108,10 @@ class Plugin implements PluginInterface
     {
         $pluginData = $this->getData('plugin_meta');
         if ($pluginData === null) {
-            $pluginData = get_file_data($this->getFile(), ['Version' => 'Version'], 'plugin');
+            $pluginData = get_file_data($this->getFile(), [
+                'Plugin Name' => 'Plugin Name',
+                'Version' => 'Version',
+            ], 'plugin');
 
             $this->setData('plugin_meta', $pluginData);
         }
