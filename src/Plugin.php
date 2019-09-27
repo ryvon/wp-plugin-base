@@ -6,7 +6,7 @@ use Ryvon\Plugin\Template\Locator;
 use Ryvon\Plugin\Template\Renderer;
 use Ryvon\Plugin\Template\RendererInterface;
 
-abstract class BasePlugin implements PluginInterface
+abstract class Plugin implements PluginInterface
 {
     /**
      * @var string
