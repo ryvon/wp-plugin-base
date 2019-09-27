@@ -12,12 +12,12 @@ class Plugin implements PluginInterface
     /**
      * @var string
      */
-    private $file;
+    private $id;
 
     /**
      * @var string
      */
-    private $id;
+    private $file;
 
     /**
      * @var array
@@ -36,8 +36,8 @@ class Plugin implements PluginInterface
      */
     public function __construct(string $file, array $handlers, array $data = [])
     {
-        $this->file = $file;
         $this->id = basename(basename($file, '.php'));
+        $this->file = $file;
         $this->handlers = [];
         $this->data = $data;
 
@@ -52,17 +52,17 @@ class Plugin implements PluginInterface
     /**
      * @return string
      */
-    public function getFile(): string
+    public function getId(): string
     {
-        return $this->file;
+        return $this->id;
     }
 
     /**
      * @return string
      */
-    public function getId(): string
+    public function getFile(): string
     {
-        return $this->id;
+        return $this->file;
     }
 
     /**
