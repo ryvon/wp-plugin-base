@@ -2,9 +2,11 @@
 
 namespace Ryvon\Plugin;
 
-use Ryvon\Plugin\Template\Locator;
-use Ryvon\Plugin\Template\Renderer;
-use Ryvon\Plugin\Template\RendererInterface;
+use Ryvon\Plugin\Handler\ActivationHandlerInterface;
+use Ryvon\Plugin\Handler\DeactivationHandlerInterface;
+use Ryvon\Plugin\Handler\GenericHandlerInterface;
+use Ryvon\Plugin\Handler\HandlerInterface;
+
 
 abstract class Plugin implements PluginInterface
 {
@@ -147,7 +149,9 @@ abstract class Plugin implements PluginInterface
 
         $admin = is_admin();
         foreach ($this->getHandlers() as $handler) {
-            $handler->setup($admin);
+            if (($handler instanceof GenericHandlerInterface) && $handler->setup($admin) === false) {
+                return;
+            }
         }
     }
 
@@ -161,6 +165,19 @@ abstract class Plugin implements PluginInterface
      */
     public function activate(): void
     {
+        $activationErrors = [];
+
+        foreach ($this->getHandlers() as $handler) {
+            if ($handler instanceof ActivationHandlerInterface) {
+                $activationErrors[] = $handler->activate();
+            }
+        }
+
+        $errors = array_merge([], ...$activationErrors);
+        if (count($errors)) {
+            echo implode('<br/>', $errors);
+            exit;
+        }
     }
 
     /**
@@ -168,5 +185,10 @@ abstract class Plugin implements PluginInterface
      */
     public function deactivate(): void
     {
+        foreach ($this->getHandlers() as $handler) {
+            if ($handler instanceof DeactivationHandlerInterface) {
+                $handler->deactivate();
+            }
+        }
     }
 }
