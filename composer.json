@@ -1,6 +1,5 @@
 {
   "name": "ryvon/wp-plugin-base",
-  "version": "0.0.1",
   "homepage": "https://ryvon.com",
   "license": "MIT",
   "require-dev": {
