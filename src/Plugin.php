@@ -22,7 +22,7 @@ class Plugin implements PluginInterface
     /**
      * @var array
      */
-    private $data;
+    private $meta;
 
     /**
      * @var HandlerInterface[]
@@ -32,14 +32,12 @@ class Plugin implements PluginInterface
     /**
      * @param string $file
      * @param HandlerInterface[] $handlers
-     * @param array $data
      */
-    public function __construct(string $file, array $handlers, array $data = [])
+    public function __construct(string $file, array $handlers)
     {
         $this->id = basename(basename($file, '.php'));
         $this->file = $file;
         $this->handlers = [];
-        $this->data = $data;
 
         foreach ($handlers as $handler) {
             if ($handler instanceof PluginAwareInterface) {
@@ -106,50 +104,14 @@ class Plugin implements PluginInterface
      */
     private function getPluginMeta(): array
     {
-        $pluginData = $this->getData('plugin_meta');
-        if ($pluginData === null) {
-            $pluginData = get_file_data($this->getFile(), [
+        if ($this->meta === null) {
+            $this->meta = get_file_data($this->getFile(), [
                 'Plugin Name' => 'Plugin Name',
                 'Version' => 'Version',
             ], 'plugin');
-
-            $this->setData('plugin_meta', $pluginData);
         }
 
-        return $pluginData;
-    }
-
-    /**
-     * TODO Evaluate whether we want to keep [set/get/clear]Data or not. The intent is to provide a way for handlers to
-     *      know about post type ids or other required data but there may be a better way of handling it (Options class
-     *      passed to handler constructors?)
-     *
-     * @param string $key
-     * @param $value
-     */
-    public function setData(string $key, $value): void
-    {
-        $this->data[$key] = $value;
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $defaultValue
-     * @return mixed
-     */
-    public function getData(string $key, $defaultValue = null)
-    {
-        return $this->data[$key] ?? $defaultValue;
-    }
-
-    /**
-     * @param string $key
-     */
-    public function clearData(string $key): void
-    {
-        if (isset($this->data[$key])) {
-            unset($this->data[$key]);
-        }
+        return $this->meta;
     }
 
     /**

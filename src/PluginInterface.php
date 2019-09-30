@@ -35,19 +35,6 @@ interface PluginInterface
     public function getVersion(): ?string;
 
     /**
-     * @param string $key
-     * @param $value
-     */
-    public function setData(string $key, $value): void;
-
-    /**
-     * @param string $key
-     * @param mixed $defaultValue
-     * @return mixed
-     */
-    public function getData(string $key, $defaultValue = null);
-
-    /**
      * @return void
      */
     public function run(): void;
