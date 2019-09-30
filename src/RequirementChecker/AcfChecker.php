@@ -21,7 +21,7 @@ class AcfChecker implements RequirementCheckerInterface
     /**
      * @inheritDoc
      */
-    public function verify(): array
+    public function check(): ?array
     {
         if (!$this->isAcfActive()) {
             return [$this->errorMessage];

@@ -38,7 +38,7 @@ class RequirementCheckerHandler implements ActivationHandlerInterface, GenericHa
     /**
      * @inheritDoc
      */
-    public function activate(): array
+    public function activate(): ?array
     {
         return $this->getErrors();
     }

@@ -5,7 +5,7 @@ namespace Ryvon\Plugin\RequirementChecker;
 interface RequirementCheckerInterface
 {
     /**
-     * @return string[] Errors
+     * @return string[]|null The requirement errors to show the user.
      */
-    public function verify(): array;
+    public function check(): ?array;
 }
