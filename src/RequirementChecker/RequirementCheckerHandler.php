@@ -40,7 +40,7 @@ class RequirementCheckerHandler implements ActivationHandlerInterface, GenericHa
      */
     public function activate(): ?array
     {
-        return $this->getErrors();
+        return $this->getRequirementErrors();
     }
 
     /**
@@ -48,7 +48,7 @@ class RequirementCheckerHandler implements ActivationHandlerInterface, GenericHa
      */
     public function setup(bool $isAdmin)
     {
-        $errors = $this->getErrors();
+        $errors = $this->getRequirementErrors();
         if (count($errors)) {
             require_once ABSPATH . 'wp-admin/includes/plugin.php';
             deactivate_plugins(plugin_basename($this->plugin->getFile()));
@@ -66,7 +66,7 @@ class RequirementCheckerHandler implements ActivationHandlerInterface, GenericHa
     /**
      * @return string[]
      */
-    protected function getErrors(): array
+    protected function getRequirementErrors(): array
     {
         $errors = [];
 
