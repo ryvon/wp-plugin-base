@@ -68,15 +68,17 @@ class RequirementCheckerHandler implements ActivationHandlerInterface, GenericHa
      */
     protected function getErrors(): array
     {
-        $errorsLists = [];
+        $errors = [];
 
         foreach ($this->checkers as $checker) {
-            $checkerErrors = $checker->verify();
-            if ($checkerErrors) {
-                $errorsLists[] = $checkerErrors;
+            $requirementErrors = $checker->check();
+            if (is_array($requirementErrors) && count($requirementErrors)) {
+                foreach ($requirementErrors as $requirementError) {
+                    $errors[] = $requirementError;
+                }
             }
         }
 
-        return array_merge([], ...$errorsLists);
+        return $errors;
     }
 }

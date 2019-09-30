@@ -183,15 +183,19 @@ class Plugin implements PluginInterface
      */
     public function activate(): void
     {
-        $activationErrors = [];
+        $errors = [];
 
         foreach ($this->getHandlers() as $handler) {
             if ($handler instanceof ActivationHandlerInterface) {
-                $activationErrors[] = $handler->activate();
+                $activationErrors = $handler->activate();
+                if (is_array($activationErrors) && count($activationErrors)) {
+                    foreach ($activationErrors as $handlerError) {
+                        $errors[] = $handlerError;
+                    }
+                }
             }
         }
 
-        $errors = array_merge([], ...$activationErrors);
         if (count($errors)) {
             echo implode('<br/>', $errors);
             exit;
