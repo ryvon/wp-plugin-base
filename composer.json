@@ -1,5 +1,6 @@
 {
   "name": "ryvon/wp-plugin-base",
+  "description": "WIP",
   "homepage": "https://ryvon.com",
   "license": "MIT",
   "require": {
@@ -17,5 +18,8 @@
     "files": [
       "src/functions.php"
     ]
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit"
   }
 }
